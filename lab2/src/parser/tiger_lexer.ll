@@ -29,6 +29,8 @@ int             [0-9]+
  /* Declare start condition (sub-automate states) to handle strings */
 %x STRING
 
+%x COMMENT
+
 %{
   /* Each time a pattern is found, set the end cursor to the matched width */
   # define YY_USER_ACTION loc.columns (yyleng);
@@ -87,6 +89,16 @@ var      return yy::tiger_parser::make_VAR(loc);
 
  /* Integers */
 {int}      if((strtol(yytext,NULL,10) < TIGER_INT_MAX) & (strtol(yytext,NULL,10) > TIGER_INT_MIN)){ return yy::tiger_parser::make_INT(strtol(yytext,NULL,10), loc);} else {utils::error (loc, "invalid integer");}
+
+ /* Comments */
+"/*" {comment_depth = 1; BEGIN(COMMENT);}
+<COMMENT>{
+  "/*" {comment_depth++;}
+  "*/" {comment_depth--;
+    if (comment_depth == 0) BEGIN(INITIAL);}
+  <<EOF>> utils::error (loc, "unterminated comment");
+  . {}
+}
 
  /* Strings */
 \" {BEGIN(STRING); string_buffer.clear();}
