@@ -78,6 +78,7 @@ using utils::nl;
 
 %token <Symbol> ID "id"
 %token <Symbol> STRING "string"
+%token <int> INT "int"
 
 // Declare the nonterminals types
 
@@ -87,7 +88,7 @@ using utils::nl;
 %type <Decl *> decl funcDecl varDecl;
 %type <std::vector<Decl *>> decls;
 %type <Expr *> expr stringExpr callExpr opExpr negExpr
-            assignExpr ifExpr whileExpr forExpr breakExpr var;
+            assignExpr ifExpr intExpr whileExpr forExpr breakExpr var;
 
 %type <std::vector<Expr *>> arguments nonemptyarguments;
 
@@ -119,6 +120,7 @@ decl: varDecl { $$ = $1; }
 ;
 
 expr: stringExpr { $$ = $1; }
+   | intExpr { $$ = $1; }
    | var { $$ = $1; }
    | callExpr { $$ = $1; }
    | opExpr { $$ = $1; }
@@ -145,6 +147,10 @@ stringExpr: STRING
 
 var : ID
   { $$ = new Identifier(@1, $1); }
+;
+
+intExpr : INT
+  { $$ = new IntegerLiteral(@1, $1); }
 ;
 
 callExpr: ID LPAREN arguments RPAREN

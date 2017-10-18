@@ -251,17 +251,18 @@ namespace yy {
   {
       switch (that.type_get ())
     {
-      case 40: // program
-      case 41: // expr
-      case 42: // stringExpr
-      case 43: // var
-      case 44: // callExpr
-      case 45: // negExpr
-      case 46: // opExpr
-      case 47: // assignExpr
-      case 48: // whileExpr
-      case 49: // forExpr
-      case 50: // breakExpr
+      case 41: // program
+      case 42: // expr
+      case 43: // stringExpr
+      case 44: // var
+      case 45: // intExpr
+      case 46: // callExpr
+      case 47: // negExpr
+      case 48: // opExpr
+      case 49: // assignExpr
+      case 50: // whileExpr
+      case 51: // forExpr
+      case 52: // breakExpr
         value.move< Expr * > (that.value);
         break;
 
@@ -270,8 +271,12 @@ namespace yy {
         value.move< Symbol > (that.value);
         break;
 
-      case 51: // arguments
-      case 52: // nonemptyarguments
+      case 36: // "int"
+        value.move< int > (that.value);
+        break;
+
+      case 53: // arguments
+      case 54: // nonemptyarguments
         value.move< std::vector<Expr *> > (that.value);
         break;
 
@@ -290,17 +295,18 @@ namespace yy {
     state = that.state;
       switch (that.type_get ())
     {
-      case 40: // program
-      case 41: // expr
-      case 42: // stringExpr
-      case 43: // var
-      case 44: // callExpr
-      case 45: // negExpr
-      case 46: // opExpr
-      case 47: // assignExpr
-      case 48: // whileExpr
-      case 49: // forExpr
-      case 50: // breakExpr
+      case 41: // program
+      case 42: // expr
+      case 43: // stringExpr
+      case 44: // var
+      case 45: // intExpr
+      case 46: // callExpr
+      case 47: // negExpr
+      case 48: // opExpr
+      case 49: // assignExpr
+      case 50: // whileExpr
+      case 51: // forExpr
+      case 52: // breakExpr
         value.copy< Expr * > (that.value);
         break;
 
@@ -309,8 +315,12 @@ namespace yy {
         value.copy< Symbol > (that.value);
         break;
 
-      case 51: // arguments
-      case 52: // nonemptyarguments
+      case 36: // "int"
+        value.copy< int > (that.value);
+        break;
+
+      case 53: // arguments
+      case 54: // nonemptyarguments
         value.copy< std::vector<Expr *> > (that.value);
         break;
 
@@ -461,7 +471,7 @@ namespace yy {
   yyla.location.begin.filename = yyla.location.end.filename = &driver.file;
 }
 
-#line 465 "tiger_parser.cc" // lalr1.cc:741
+#line 475 "tiger_parser.cc" // lalr1.cc:741
 
     /* Initialize the stack.  The initial state will be set in
        yynewstate, since the latter expects the semantical and the
@@ -551,17 +561,18 @@ namespace yy {
          when using variants.  */
         switch (yyr1_[yyn])
     {
-      case 40: // program
-      case 41: // expr
-      case 42: // stringExpr
-      case 43: // var
-      case 44: // callExpr
-      case 45: // negExpr
-      case 46: // opExpr
-      case 47: // assignExpr
-      case 48: // whileExpr
-      case 49: // forExpr
-      case 50: // breakExpr
+      case 41: // program
+      case 42: // expr
+      case 43: // stringExpr
+      case 44: // var
+      case 45: // intExpr
+      case 46: // callExpr
+      case 47: // negExpr
+      case 48: // opExpr
+      case 49: // assignExpr
+      case 50: // whileExpr
+      case 51: // forExpr
+      case 52: // breakExpr
         yylhs.value.build< Expr * > ();
         break;
 
@@ -570,8 +581,12 @@ namespace yy {
         yylhs.value.build< Symbol > ();
         break;
 
-      case 51: // arguments
-      case 52: // nonemptyarguments
+      case 36: // "int"
+        yylhs.value.build< int > ();
+        break;
+
+      case 53: // arguments
+      case 54: // nonemptyarguments
         yylhs.value.build< std::vector<Expr *> > ();
         break;
 
@@ -593,200 +608,212 @@ namespace yy {
           switch (yyn)
             {
   case 2:
-#line 114 "tiger_parser.yy" // lalr1.cc:859
+#line 115 "tiger_parser.yy" // lalr1.cc:859
     { driver.result_ast = yystack_[0].value.as< Expr * > (); }
-#line 599 "tiger_parser.cc" // lalr1.cc:859
+#line 614 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 3:
-#line 121 "tiger_parser.yy" // lalr1.cc:859
+#line 122 "tiger_parser.yy" // lalr1.cc:859
     { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
-#line 605 "tiger_parser.cc" // lalr1.cc:859
+#line 620 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 4:
-#line 122 "tiger_parser.yy" // lalr1.cc:859
+#line 123 "tiger_parser.yy" // lalr1.cc:859
     { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
-#line 611 "tiger_parser.cc" // lalr1.cc:859
+#line 626 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 5:
-#line 123 "tiger_parser.yy" // lalr1.cc:859
+#line 124 "tiger_parser.yy" // lalr1.cc:859
     { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
-#line 617 "tiger_parser.cc" // lalr1.cc:859
+#line 632 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 6:
-#line 124 "tiger_parser.yy" // lalr1.cc:859
+#line 125 "tiger_parser.yy" // lalr1.cc:859
     { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
-#line 623 "tiger_parser.cc" // lalr1.cc:859
+#line 638 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 7:
-#line 125 "tiger_parser.yy" // lalr1.cc:859
+#line 126 "tiger_parser.yy" // lalr1.cc:859
     { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
-#line 629 "tiger_parser.cc" // lalr1.cc:859
+#line 644 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 8:
-#line 126 "tiger_parser.yy" // lalr1.cc:859
+#line 127 "tiger_parser.yy" // lalr1.cc:859
     { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
-#line 635 "tiger_parser.cc" // lalr1.cc:859
+#line 650 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 9:
-#line 127 "tiger_parser.yy" // lalr1.cc:859
+#line 128 "tiger_parser.yy" // lalr1.cc:859
     { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
-#line 641 "tiger_parser.cc" // lalr1.cc:859
+#line 656 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 10:
-#line 128 "tiger_parser.yy" // lalr1.cc:859
+#line 129 "tiger_parser.yy" // lalr1.cc:859
     { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
-#line 647 "tiger_parser.cc" // lalr1.cc:859
+#line 662 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 11:
-#line 129 "tiger_parser.yy" // lalr1.cc:859
+#line 130 "tiger_parser.yy" // lalr1.cc:859
     { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
-#line 653 "tiger_parser.cc" // lalr1.cc:859
+#line 668 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 12:
-#line 143 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new StringLiteral(yystack_[0].location, Symbol(yystack_[0].value.as< Symbol > ())); }
-#line 659 "tiger_parser.cc" // lalr1.cc:859
+#line 131 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = yystack_[0].value.as< Expr * > (); }
+#line 674 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 13:
-#line 147 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new Identifier(yystack_[0].location, yystack_[0].value.as< Symbol > ()); }
-#line 665 "tiger_parser.cc" // lalr1.cc:859
+#line 145 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new StringLiteral(yystack_[0].location, Symbol(yystack_[0].value.as< Symbol > ())); }
+#line 680 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 14:
-#line 151 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new FunCall(yystack_[3].location, yystack_[1].value.as< std::vector<Expr *> > (), Symbol(yystack_[3].value.as< Symbol > ())); }
-#line 671 "tiger_parser.cc" // lalr1.cc:859
+#line 149 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new Identifier(yystack_[0].location, yystack_[0].value.as< Symbol > ()); }
+#line 686 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 15:
-#line 155 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, new IntegerLiteral(yystack_[1].location, 0), yystack_[0].value.as< Expr * > (), o_minus); }
-#line 677 "tiger_parser.cc" // lalr1.cc:859
+#line 153 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new IntegerLiteral(yystack_[0].location, yystack_[0].value.as< int > ()); }
+#line 692 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 16:
-#line 161 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_times); }
-#line 683 "tiger_parser.cc" // lalr1.cc:859
+#line 157 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new FunCall(yystack_[3].location, yystack_[1].value.as< std::vector<Expr *> > (), Symbol(yystack_[3].value.as< Symbol > ())); }
+#line 698 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 17:
-#line 162 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_divide); }
-#line 689 "tiger_parser.cc" // lalr1.cc:859
+#line 161 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, new IntegerLiteral(yystack_[1].location, 0), yystack_[0].value.as< Expr * > (), o_minus); }
+#line 704 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 18:
-#line 163 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_eq); }
-#line 695 "tiger_parser.cc" // lalr1.cc:859
+#line 167 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_times); }
+#line 710 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 19:
-#line 164 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_neq); }
-#line 701 "tiger_parser.cc" // lalr1.cc:859
+#line 168 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_divide); }
+#line 716 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 20:
-#line 165 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_lt); }
-#line 707 "tiger_parser.cc" // lalr1.cc:859
+#line 169 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_eq); }
+#line 722 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 21:
-#line 166 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_gt); }
-#line 713 "tiger_parser.cc" // lalr1.cc:859
+#line 170 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_neq); }
+#line 728 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 22:
-#line 167 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_le); }
-#line 719 "tiger_parser.cc" // lalr1.cc:859
+#line 171 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_lt); }
+#line 734 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 23:
-#line 168 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_ge); }
-#line 725 "tiger_parser.cc" // lalr1.cc:859
+#line 172 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_gt); }
+#line 740 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 24:
-#line 169 "tiger_parser.yy" // lalr1.cc:859
+#line 173 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_le); }
+#line 746 "tiger_parser.cc" // lalr1.cc:859
+    break;
+
+  case 25:
+#line 174 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new BinaryOperator(yystack_[1].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > (), o_ge); }
+#line 752 "tiger_parser.cc" // lalr1.cc:859
+    break;
+
+  case 26:
+#line 175 "tiger_parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< Expr * > () = new IfThenElse(yystack_[1].location, yystack_[2].value.as< Expr * > (),
                             new IfThenElse(yystack_[0].location, yystack_[0].value.as< Expr * > (), new IntegerLiteral(nl, 1), new IntegerLiteral(nl, 0)),
                             new IntegerLiteral(nl, 0));
       }
-#line 735 "tiger_parser.cc" // lalr1.cc:859
-    break;
-
-  case 25:
-#line 178 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new Assign(yystack_[1].location, new Identifier(yystack_[2].location, yystack_[2].value.as< Symbol > ()), yystack_[0].value.as< Expr * > ()); }
-#line 741 "tiger_parser.cc" // lalr1.cc:859
-    break;
-
-  case 26:
-#line 181 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new WhileLoop(yystack_[3].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > ()); }
-#line 747 "tiger_parser.cc" // lalr1.cc:859
+#line 762 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 27:
-#line 185 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new ForLoop(yystack_[7].location, new VarDecl(yystack_[6].location, yystack_[6].value.as< Symbol > (), yystack_[4].value.as< Expr * > (), boost::none), yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > ()); }
-#line 753 "tiger_parser.cc" // lalr1.cc:859
+#line 184 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new Assign(yystack_[1].location, new Identifier(yystack_[2].location, yystack_[2].value.as< Symbol > ()), yystack_[0].value.as< Expr * > ()); }
+#line 768 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 28:
-#line 188 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< Expr * > () = new Break(yystack_[0].location); }
-#line 759 "tiger_parser.cc" // lalr1.cc:859
+#line 187 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new WhileLoop(yystack_[3].location, yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > ()); }
+#line 774 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 29:
 #line 191 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Expr *> > () = std::vector<Expr *>(); }
-#line 765 "tiger_parser.cc" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new ForLoop(yystack_[7].location, new VarDecl(yystack_[6].location, yystack_[6].value.as< Symbol > (), yystack_[4].value.as< Expr * > (), boost::none), yystack_[2].value.as< Expr * > (), yystack_[0].value.as< Expr * > ()); }
+#line 780 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 30:
-#line 192 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Expr *> > () = yystack_[0].value.as< std::vector<Expr *> > (); }
-#line 771 "tiger_parser.cc" // lalr1.cc:859
+#line 194 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< Expr * > () = new Break(yystack_[0].location); }
+#line 786 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 31:
-#line 195 "tiger_parser.yy" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Expr *> > () = std::vector<Expr *>({yystack_[0].value.as< Expr * > ()}); }
-#line 777 "tiger_parser.cc" // lalr1.cc:859
+#line 197 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Expr *> > () = std::vector<Expr *>(); }
+#line 792 "tiger_parser.cc" // lalr1.cc:859
     break;
 
   case 32:
-#line 197 "tiger_parser.yy" // lalr1.cc:859
+#line 198 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Expr *> > () = yystack_[0].value.as< std::vector<Expr *> > (); }
+#line 798 "tiger_parser.cc" // lalr1.cc:859
+    break;
+
+  case 33:
+#line 201 "tiger_parser.yy" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Expr *> > () = std::vector<Expr *>({yystack_[0].value.as< Expr * > ()}); }
+#line 804 "tiger_parser.cc" // lalr1.cc:859
+    break;
+
+  case 34:
+#line 203 "tiger_parser.yy" // lalr1.cc:859
     {
     yylhs.value.as< std::vector<Expr *> > () = std::move(yystack_[2].value.as< std::vector<Expr *> > ());
     yylhs.value.as< std::vector<Expr *> > ().push_back(yystack_[0].value.as< Expr * > ());
   }
-#line 786 "tiger_parser.cc" // lalr1.cc:859
+#line 813 "tiger_parser.cc" // lalr1.cc:859
     break;
 
 
-#line 790 "tiger_parser.cc" // lalr1.cc:859
+#line 817 "tiger_parser.cc" // lalr1.cc:859
             default:
               break;
             }
@@ -1048,53 +1075,54 @@ namespace yy {
   const signed char
   tiger_parser::yypact_[] =
   {
-      11,    11,    11,   -20,   -21,    -4,   -21,    15,    72,   -21,
-     -21,   -21,   -21,   -21,   -21,   -21,   -21,   -21,     0,    -9,
-      -6,    11,    11,   -21,    11,    11,    11,    11,    11,    11,
-      11,    11,    11,    11,    11,    72,    12,    33,    72,    72,
-      72,    81,    81,    81,    81,    81,    81,    89,    72,    58,
-     -21,    11,    11,    72,    43,    11,    72
+      13,    13,    13,   -20,   -21,    -4,   -21,   -21,    15,    74,
+     -21,   -21,   -21,   -21,   -21,   -21,   -21,   -21,   -21,   -21,
+       0,    -9,    -6,    13,    13,   -21,    13,    13,    13,    13,
+      13,    13,    13,    13,    13,    13,    13,    74,    12,    17,
+      74,    74,    74,    83,    83,    83,    83,    83,    83,    91,
+      74,    60,   -21,    13,    13,    74,    45,    13,    74
   };
 
   const unsigned char
   tiger_parser::yydefact_[] =
   {
-       0,     0,     0,     0,    28,    13,    12,     0,     2,     3,
-       4,     5,     7,     6,     8,     9,    10,    11,    15,     0,
-       0,    29,     0,     1,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    31,     0,    30,    25,    16,
-      17,    18,    19,    20,    22,    21,    23,    24,    26,     0,
-      14,     0,     0,    32,     0,     0,    27
+       0,     0,     0,     0,    30,    14,    13,    15,     0,     2,
+       3,     5,     4,     6,     8,     7,     9,    10,    11,    12,
+      17,     0,     0,    31,     0,     1,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,    33,     0,    32,
+      27,    18,    19,    20,    21,    22,    24,    23,    25,    26,
+      28,     0,    16,     0,     0,    34,     0,     0,    29
   };
 
   const signed char
   tiger_parser::yypgoto_[] =
   {
      -21,   -21,    -1,   -21,   -21,   -21,   -21,   -21,   -21,   -21,
-     -21,   -21,   -21,   -21
+     -21,   -21,   -21,   -21,   -21
   };
 
   const signed char
   tiger_parser::yydefgoto_[] =
   {
-      -1,     7,     8,     9,    10,    11,    12,    13,    14,    15,
-      16,    17,    36,    37
+      -1,     8,     9,    10,    11,    12,    13,    14,    15,    16,
+      17,    18,    19,    38,    39
   };
 
   const signed char
   tiger_parser::yytable_[] =
   {
-      18,    19,    21,    24,    25,    26,    27,    28,    29,    30,
-      31,    32,    24,    25,    20,    23,    34,    33,    22,    50,
-      35,    38,     1,    39,    40,    41,    42,    43,    44,    45,
-      46,    47,    48,    49,     2,     3,    51,     0,     0,     0,
-       0,     4,     0,     0,     0,     5,     6,     0,     0,     0,
-      53,    54,     0,     0,    56,    24,    25,    26,    27,    28,
-      29,    30,    31,    32,     0,     0,     0,     0,     0,    55,
-      24,    25,    26,    27,    28,    29,    30,    31,    32,     0,
-       0,     0,     0,    52,    24,    25,    26,    27,    28,    29,
-      30,    31,    32,    24,    25,    -1,    -1,    -1,    -1,    -1,
-      -1,    24,    25,    26,    27,    28,    29,    30,    31
+      20,    21,    23,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    26,    27,    22,    25,    36,    35,    24,    52,
+      53,     0,    37,    40,     1,    41,    42,    43,    44,    45,
+      46,    47,    48,    49,    50,    51,     2,     3,     0,     0,
+       0,     0,     0,     4,     0,     0,     0,     5,     6,     7,
+       0,     0,    55,    56,     0,     0,    58,    26,    27,    28,
+      29,    30,    31,    32,    33,    34,     0,     0,     0,     0,
+       0,    57,    26,    27,    28,    29,    30,    31,    32,    33,
+      34,     0,     0,     0,     0,    54,    26,    27,    28,    29,
+      30,    31,    32,    33,    34,    26,    27,    -1,    -1,    -1,
+      -1,    -1,    -1,    26,    27,    28,    29,    30,    31,    32,
+      33
   };
 
   const signed char
@@ -1102,44 +1130,45 @@ namespace yy {
   {
        1,     2,     6,    12,    13,    14,    15,    16,    17,    18,
       19,    20,    12,    13,    34,     0,    22,    26,    22,     7,
-      21,    22,    11,    24,    25,    26,    27,    28,    29,    30,
-      31,    32,    33,    34,    23,    24,     3,    -1,    -1,    -1,
-      -1,    30,    -1,    -1,    -1,    34,    35,    -1,    -1,    -1,
-      51,    52,    -1,    -1,    55,    12,    13,    14,    15,    16,
-      17,    18,    19,    20,    -1,    -1,    -1,    -1,    -1,    26,
-      12,    13,    14,    15,    16,    17,    18,    19,    20,    -1,
-      -1,    -1,    -1,    25,    12,    13,    14,    15,    16,    17,
-      18,    19,    20,    12,    13,    14,    15,    16,    17,    18,
-      19,    12,    13,    14,    15,    16,    17,    18,    19
+       3,    -1,    23,    24,    11,    26,    27,    28,    29,    30,
+      31,    32,    33,    34,    35,    36,    23,    24,    -1,    -1,
+      -1,    -1,    -1,    30,    -1,    -1,    -1,    34,    35,    36,
+      -1,    -1,    53,    54,    -1,    -1,    57,    12,    13,    14,
+      15,    16,    17,    18,    19,    20,    -1,    -1,    -1,    -1,
+      -1,    26,    12,    13,    14,    15,    16,    17,    18,    19,
+      20,    -1,    -1,    -1,    -1,    25,    12,    13,    14,    15,
+      16,    17,    18,    19,    20,    12,    13,    14,    15,    16,
+      17,    18,    19,    12,    13,    14,    15,    16,    17,    18,
+      19
   };
 
   const unsigned char
   tiger_parser::yystos_[] =
   {
-       0,    11,    23,    24,    30,    34,    35,    40,    41,    42,
-      43,    44,    45,    46,    47,    48,    49,    50,    41,    41,
-      34,     6,    22,     0,    12,    13,    14,    15,    16,    17,
-      18,    19,    20,    26,    22,    41,    51,    52,    41,    41,
-      41,    41,    41,    41,    41,    41,    41,    41,    41,    41,
-       7,     3,    25,    41,    41,    26,    41
+       0,    11,    23,    24,    30,    34,    35,    36,    41,    42,
+      43,    44,    45,    46,    47,    48,    49,    50,    51,    52,
+      42,    42,    34,     6,    22,     0,    12,    13,    14,    15,
+      16,    17,    18,    19,    20,    26,    22,    42,    53,    54,
+      42,    42,    42,    42,    42,    42,    42,    42,    42,    42,
+      42,    42,     7,     3,    25,    42,    42,    26,    42
   };
 
   const unsigned char
   tiger_parser::yyr1_[] =
   {
-       0,    39,    40,    41,    41,    41,    41,    41,    41,    41,
-      41,    41,    42,    43,    44,    45,    46,    46,    46,    46,
-      46,    46,    46,    46,    46,    47,    48,    49,    50,    51,
-      51,    52,    52
+       0,    40,    41,    42,    42,    42,    42,    42,    42,    42,
+      42,    42,    42,    43,    44,    45,    46,    47,    48,    48,
+      48,    48,    48,    48,    48,    48,    48,    49,    50,    51,
+      52,    53,    53,    54,    54
   };
 
   const unsigned char
   tiger_parser::yyr2_[] =
   {
        0,     2,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     4,     2,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     4,     8,     1,     0,
-       1,     1,     3
+       1,     1,     1,     1,     1,     1,     4,     2,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     4,     8,
+       1,     0,     1,     1,     3
   };
 
 
@@ -1154,20 +1183,20 @@ namespace yy {
   "\"=\"", "\"<>\"", "\"<\"", "\"<=\"", "\">\"", "\">=\"", "\"&\"",
   "\"|\"", "\":=\"", "\"while\"", "\"for\"", "\"to\"", "\"do\"", "\"let\"",
   "\"in\"", "\"end\"", "\"break\"", "\"function\"", "\"var\"",
-  "\"uminus\"", "\"id\"", "\"string\"", "TYPE", "THEN", "OF", "$accept",
-  "program", "expr", "stringExpr", "var", "callExpr", "negExpr", "opExpr",
-  "assignExpr", "whileExpr", "forExpr", "breakExpr", "arguments",
-  "nonemptyarguments", YY_NULLPTR
+  "\"uminus\"", "\"id\"", "\"string\"", "\"int\"", "TYPE", "THEN", "OF",
+  "$accept", "program", "expr", "stringExpr", "var", "intExpr", "callExpr",
+  "negExpr", "opExpr", "assignExpr", "whileExpr", "forExpr", "breakExpr",
+  "arguments", "nonemptyarguments", YY_NULLPTR
   };
 
 #if YYDEBUG
   const unsigned char
   tiger_parser::yyrline_[] =
   {
-       0,   114,   114,   121,   122,   123,   124,   125,   126,   127,
-     128,   129,   142,   146,   150,   154,   161,   162,   163,   164,
-     165,   166,   167,   168,   169,   177,   181,   184,   188,   191,
-     192,   195,   196
+       0,   115,   115,   122,   123,   124,   125,   126,   127,   128,
+     129,   130,   131,   144,   148,   152,   156,   160,   167,   168,
+     169,   170,   171,   172,   173,   174,   175,   183,   187,   190,
+     194,   197,   198,   201,   202
   };
 
   // Print the state stack on the debug stream.
@@ -1202,8 +1231,8 @@ namespace yy {
 
 
 } // yy
-#line 1206 "tiger_parser.cc" // lalr1.cc:1167
-#line 230 "tiger_parser.yy" // lalr1.cc:1168
+#line 1235 "tiger_parser.cc" // lalr1.cc:1167
+#line 236 "tiger_parser.yy" // lalr1.cc:1168
 
 
 void
