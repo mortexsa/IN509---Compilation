@@ -652,11 +652,12 @@ static std::string string_buffer;
 #define YY_NO_INPUT 1
 /* Declare start condition (sub-automate states) to handle strings */
 
+/* Declare start condition (sub-automate states) to handle comments */
 
 #line 35 "tiger_lexer.ll"
   /* Each time a pattern is found, set the end cursor to the matched width */
   # define YY_USER_ACTION loc.columns (yyleng);
-#line 660 "tiger_lexer.cc"
+#line 661 "tiger_lexer.cc"
 
 #define INITIAL 0
 #define STRING 1
@@ -950,7 +951,7 @@ YY_DECL
 
   /* Each time a line ends, increase the cursor line position and reset the
      begin column position */
-#line 954 "tiger_lexer.cc"
+#line 955 "tiger_lexer.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1323,7 +1324,7 @@ YY_RULE_SETUP
 #line 140 "tiger_lexer.ll"
 ECHO;
 	YY_BREAK
-#line 1327 "tiger_lexer.cc"
+#line 1328 "tiger_lexer.cc"
 
 	case YY_END_OF_BUFFER:
 		{

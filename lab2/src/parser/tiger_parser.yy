@@ -104,6 +104,8 @@ using utils::nl;
 
 %left OR;
 %left AND;
+%left PLUS MINUS;
+%left TIMES DEVIDE;
 %nonassoc EQ NEQ LT LE GT GE;
 
 %left UMINUS;
@@ -166,6 +168,8 @@ negExpr: MINUS expr
 
 opExpr: expr TIMES expr  { $$ = new BinaryOperator(@2, $1, $3, o_times); }
       | expr DIVIDE expr { $$ = new BinaryOperator(@2, $1, $3, o_divide); }
+      | expr PLUS expr   { $$ = new BinaryOperator(@2, $1, $3, o_plus); }
+      | expr MINUS expr  { $$ = new BinaryOperator(@2, $1, $3, o_minus); }
       | expr EQ expr     { $$ = new BinaryOperator(@2, $1, $3, o_eq); }
       | expr NEQ expr    { $$ = new BinaryOperator(@2, $1, $3, o_neq); }
       | expr LT expr     { $$ = new BinaryOperator(@2, $1, $3, o_lt); }
@@ -176,6 +180,10 @@ opExpr: expr TIMES expr  { $$ = new BinaryOperator(@2, $1, $3, o_times); }
         $$ = new IfThenElse(@2, $1,
                             new IfThenElse(@3, $3, new IntegerLiteral(nl, 1), new IntegerLiteral(nl, 0)),
                             new IntegerLiteral(nl, 0));
+      }
+      | expr OR expr    {
+        $$ = new IfThenElse(@2, $1,
+                            new IntegerLiteral(nl, 1), new IfThenElse(@3, $3, new IntegerLiteral(nl, 1), new IntegerLiteral(nl, 0)));
       }
 ;
 

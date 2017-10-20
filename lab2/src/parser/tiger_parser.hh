@@ -378,7 +378,8 @@ namespace yy {
         TOK_INT = 291,
         TOK_TYPE = 292,
         TOK_THEN = 293,
-        TOK_OF = 294
+        TOK_OF = 294,
+        TOK_DEVIDE = 295
       };
     };
 
@@ -643,6 +644,10 @@ namespace yy {
     symbol_type
     make_OF (const location_type& l);
 
+    static inline
+    symbol_type
+    make_DEVIDE (const location_type& l);
+
 
     /// Build a parser object.
     tiger_parser (ParserDriver& driver_yyarg);
@@ -848,12 +853,12 @@ namespace yy {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 110,     ///< Last index in yytable_.
+      yylast_ = 143,     ///< Last index in yytable_.
       yynnts_ = 15,  ///< Number of nonterminal symbols.
       yyfinal_ = 25, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 40  ///< Number of tokens.
+      yyntokens_ = 41  ///< Number of tokens.
     };
 
 
@@ -899,9 +904,9 @@ namespace yy {
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39
+      35,    36,    37,    38,    39,    40
     };
-    const unsigned int user_token_number_max_ = 294;
+    const unsigned int user_token_number_max_ = 295;
     const token_number_type undef_token_ = 2;
 
     if (static_cast<int>(t) <= yyeof_)
@@ -934,18 +939,18 @@ namespace yy {
   {
       switch (other.type_get ())
     {
-      case 41: // program
-      case 42: // expr
-      case 43: // stringExpr
-      case 44: // var
-      case 45: // intExpr
-      case 46: // callExpr
-      case 47: // negExpr
-      case 48: // opExpr
-      case 49: // assignExpr
-      case 50: // whileExpr
-      case 51: // forExpr
-      case 52: // breakExpr
+      case 42: // program
+      case 43: // expr
+      case 44: // stringExpr
+      case 45: // var
+      case 46: // intExpr
+      case 47: // callExpr
+      case 48: // negExpr
+      case 49: // opExpr
+      case 50: // assignExpr
+      case 51: // whileExpr
+      case 52: // forExpr
+      case 53: // breakExpr
         value.copy< Expr * > (other.value);
         break;
 
@@ -958,8 +963,8 @@ namespace yy {
         value.copy< int > (other.value);
         break;
 
-      case 53: // arguments
-      case 54: // nonemptyarguments
+      case 54: // arguments
+      case 55: // nonemptyarguments
         value.copy< std::vector<Expr *> > (other.value);
         break;
 
@@ -980,18 +985,18 @@ namespace yy {
     (void) v;
       switch (this->type_get ())
     {
-      case 41: // program
-      case 42: // expr
-      case 43: // stringExpr
-      case 44: // var
-      case 45: // intExpr
-      case 46: // callExpr
-      case 47: // negExpr
-      case 48: // opExpr
-      case 49: // assignExpr
-      case 50: // whileExpr
-      case 51: // forExpr
-      case 52: // breakExpr
+      case 42: // program
+      case 43: // expr
+      case 44: // stringExpr
+      case 45: // var
+      case 46: // intExpr
+      case 47: // callExpr
+      case 48: // negExpr
+      case 49: // opExpr
+      case 50: // assignExpr
+      case 51: // whileExpr
+      case 52: // forExpr
+      case 53: // breakExpr
         value.copy< Expr * > (v);
         break;
 
@@ -1004,8 +1009,8 @@ namespace yy {
         value.copy< int > (v);
         break;
 
-      case 53: // arguments
-      case 54: // nonemptyarguments
+      case 54: // arguments
+      case 55: // nonemptyarguments
         value.copy< std::vector<Expr *> > (v);
         break;
 
@@ -1078,18 +1083,18 @@ namespace yy {
     // Type destructor.
     switch (yytype)
     {
-      case 41: // program
-      case 42: // expr
-      case 43: // stringExpr
-      case 44: // var
-      case 45: // intExpr
-      case 46: // callExpr
-      case 47: // negExpr
-      case 48: // opExpr
-      case 49: // assignExpr
-      case 50: // whileExpr
-      case 51: // forExpr
-      case 52: // breakExpr
+      case 42: // program
+      case 43: // expr
+      case 44: // stringExpr
+      case 45: // var
+      case 46: // intExpr
+      case 47: // callExpr
+      case 48: // negExpr
+      case 49: // opExpr
+      case 50: // assignExpr
+      case 51: // whileExpr
+      case 52: // forExpr
+      case 53: // breakExpr
         value.template destroy< Expr * > ();
         break;
 
@@ -1102,8 +1107,8 @@ namespace yy {
         value.template destroy< int > ();
         break;
 
-      case 53: // arguments
-      case 54: // nonemptyarguments
+      case 54: // arguments
+      case 55: // nonemptyarguments
         value.template destroy< std::vector<Expr *> > ();
         break;
 
@@ -1130,18 +1135,18 @@ namespace yy {
     super_type::move(s);
       switch (this->type_get ())
     {
-      case 41: // program
-      case 42: // expr
-      case 43: // stringExpr
-      case 44: // var
-      case 45: // intExpr
-      case 46: // callExpr
-      case 47: // negExpr
-      case 48: // opExpr
-      case 49: // assignExpr
-      case 50: // whileExpr
-      case 51: // forExpr
-      case 52: // breakExpr
+      case 42: // program
+      case 43: // expr
+      case 44: // stringExpr
+      case 45: // var
+      case 46: // intExpr
+      case 47: // callExpr
+      case 48: // negExpr
+      case 49: // opExpr
+      case 50: // assignExpr
+      case 51: // whileExpr
+      case 52: // forExpr
+      case 53: // breakExpr
         value.move< Expr * > (s.value);
         break;
 
@@ -1154,8 +1159,8 @@ namespace yy {
         value.move< int > (s.value);
         break;
 
-      case 53: // arguments
-      case 54: // nonemptyarguments
+      case 54: // arguments
+      case 55: // nonemptyarguments
         value.move< std::vector<Expr *> > (s.value);
         break;
 
@@ -1217,7 +1222,8 @@ namespace yy {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
-     285,   286,   287,   288,   289,   290,   291,   292,   293,   294
+     285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
+     295
     };
     return static_cast<token_type> (yytoken_number_[type]);
   }
@@ -1450,10 +1456,16 @@ namespace yy {
     return symbol_type (token::TOK_OF, l);
   }
 
+  tiger_parser::symbol_type
+  tiger_parser::make_DEVIDE (const location_type& l)
+  {
+    return symbol_type (token::TOK_DEVIDE, l);
+  }
+
 
 
 } // yy
-#line 1457 "tiger_parser.hh" // lalr1.cc:377
+#line 1469 "tiger_parser.hh" // lalr1.cc:377
 
 
 

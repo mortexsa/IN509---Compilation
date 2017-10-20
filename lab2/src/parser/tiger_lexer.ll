@@ -28,7 +28,7 @@ int             [0-9]+
 
  /* Declare start condition (sub-automate states) to handle strings */
 %x STRING
-
+ /* Declare start condition (sub-automate states) to handle comments */
 %x COMMENT
 
 %{
