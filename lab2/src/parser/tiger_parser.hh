@@ -295,6 +295,11 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
+      // decl
+      // varDecl
+      // funcDecl
+      char dummy1[sizeof(Decl *)];
+
       // program
       // expr
       // stringExpr
@@ -306,19 +311,37 @@ namespace yy {
       // assignExpr
       // whileExpr
       // forExpr
+      // ifExpr
+      // letInEndExpr
+      // parentheseExpr
       // breakExpr
-      char dummy1[sizeof(Expr *)];
+      char dummy2[sizeof(Expr *)];
 
       // "id"
       // "string"
-      char dummy2[sizeof(Symbol)];
+      char dummy3[sizeof(Symbol)];
+
+      // param
+      char dummy4[sizeof(VarDecl *)];
+
+      // typeannotation
+      char dummy5[sizeof(boost::optional<Symbol>)];
 
       // "int"
-      char dummy3[sizeof(int)];
+      char dummy6[sizeof(int)];
+
+      // decls
+      char dummy7[sizeof(std::vector<Decl *>)];
 
       // arguments
       // nonemptyarguments
-      char dummy4[sizeof(std::vector<Expr *>)];
+      // nonemptysequences
+      // sequences
+      char dummy8[sizeof(std::vector<Expr *>)];
+
+      // params
+      // nonemptyparams
+      char dummy9[sizeof(std::vector<VarDecl *>)];
 };
 
     /// Symbol semantic values.
@@ -373,13 +396,15 @@ namespace yy {
         TOK_FUNCTION = 286,
         TOK_VAR = 287,
         TOK_UMINUS = 288,
-        TOK_ID = 289,
-        TOK_STRING = 290,
-        TOK_INT = 291,
-        TOK_TYPE = 292,
-        TOK_THEN = 293,
-        TOK_OF = 294,
-        TOK_DEVIDE = 295
+        TOK_IF = 289,
+        TOK_THEN = 290,
+        TOK_ELSE = 291,
+        TOK_ID = 292,
+        TOK_STRING = 293,
+        TOK_INT = 294,
+        TOK_TYPE = 295,
+        TOK_OF = 296,
+        TOK_DEVIDE = 297
       };
     };
 
@@ -417,13 +442,23 @@ namespace yy {
 
   basic_symbol (typename Base::kind_type t, const location_type& l);
 
+  basic_symbol (typename Base::kind_type t, const Decl * v, const location_type& l);
+
   basic_symbol (typename Base::kind_type t, const Expr * v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const Symbol v, const location_type& l);
 
+  basic_symbol (typename Base::kind_type t, const VarDecl * v, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const boost::optional<Symbol> v, const location_type& l);
+
   basic_symbol (typename Base::kind_type t, const int v, const location_type& l);
 
+  basic_symbol (typename Base::kind_type t, const std::vector<Decl *> v, const location_type& l);
+
   basic_symbol (typename Base::kind_type t, const std::vector<Expr *> v, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const std::vector<VarDecl *> v, const location_type& l);
 
 
       /// Constructor for symbols with semantic value.
@@ -622,6 +657,18 @@ namespace yy {
 
     static inline
     symbol_type
+    make_IF (const location_type& l);
+
+    static inline
+    symbol_type
+    make_THEN (const location_type& l);
+
+    static inline
+    symbol_type
+    make_ELSE (const location_type& l);
+
+    static inline
+    symbol_type
     make_ID (const Symbol& v, const location_type& l);
 
     static inline
@@ -635,10 +682,6 @@ namespace yy {
     static inline
     symbol_type
     make_TYPE (const location_type& l);
-
-    static inline
-    symbol_type
-    make_THEN (const location_type& l);
 
     static inline
     symbol_type
@@ -715,7 +758,7 @@ namespace yy {
     // Tables.
   // YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
   // STATE-NUM.
-  static const signed char yypact_[];
+  static const short int yypact_[];
 
   // YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
   // Performed when YYTABLE does not specify something else to do.  Zero
@@ -754,7 +797,7 @@ namespace yy {
     static const char* const yytname_[];
 #if YYDEBUG
   // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-  static const unsigned char yyrline_[];
+  static const unsigned short int yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r);
     /// Print the state stack on the debug stream.
@@ -853,12 +896,12 @@ namespace yy {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 143,     ///< Last index in yytable_.
-      yynnts_ = 15,  ///< Number of nonterminal symbols.
-      yyfinal_ = 25, ///< Termination state number.
+      yylast_ = 194,     ///< Last index in yytable_.
+      yynnts_ = 28,  ///< Number of nonterminal symbols.
+      yyfinal_ = 36, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 41  ///< Number of tokens.
+      yyntokens_ = 43  ///< Number of tokens.
     };
 
 
@@ -904,9 +947,9 @@ namespace yy {
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40
+      35,    36,    37,    38,    39,    40,    41,    42
     };
-    const unsigned int user_token_number_max_ = 295;
+    const unsigned int user_token_number_max_ = 297;
     const token_number_type undef_token_ = 2;
 
     if (static_cast<int>(t) <= yyeof_)
@@ -939,33 +982,61 @@ namespace yy {
   {
       switch (other.type_get ())
     {
-      case 42: // program
-      case 43: // expr
-      case 44: // stringExpr
-      case 45: // var
-      case 46: // intExpr
-      case 47: // callExpr
-      case 48: // negExpr
-      case 49: // opExpr
-      case 50: // assignExpr
-      case 51: // whileExpr
-      case 52: // forExpr
-      case 53: // breakExpr
+      case 45: // decl
+      case 47: // varDecl
+      case 48: // funcDecl
+        value.copy< Decl * > (other.value);
+        break;
+
+      case 44: // program
+      case 46: // expr
+      case 49: // stringExpr
+      case 50: // var
+      case 51: // intExpr
+      case 52: // callExpr
+      case 53: // negExpr
+      case 54: // opExpr
+      case 55: // assignExpr
+      case 56: // whileExpr
+      case 57: // forExpr
+      case 58: // ifExpr
+      case 59: // letInEndExpr
+      case 60: // parentheseExpr
+      case 61: // breakExpr
         value.copy< Expr * > (other.value);
         break;
 
-      case 34: // "id"
-      case 35: // "string"
+      case 37: // "id"
+      case 38: // "string"
         value.copy< Symbol > (other.value);
         break;
 
-      case 36: // "int"
+      case 69: // param
+        value.copy< VarDecl * > (other.value);
+        break;
+
+      case 70: // typeannotation
+        value.copy< boost::optional<Symbol> > (other.value);
+        break;
+
+      case 39: // "int"
         value.copy< int > (other.value);
         break;
 
-      case 54: // arguments
-      case 55: // nonemptyarguments
+      case 66: // decls
+        value.copy< std::vector<Decl *> > (other.value);
+        break;
+
+      case 62: // arguments
+      case 63: // nonemptyarguments
+      case 67: // nonemptysequences
+      case 68: // sequences
         value.copy< std::vector<Expr *> > (other.value);
+        break;
+
+      case 64: // params
+      case 65: // nonemptyparams
+        value.copy< std::vector<VarDecl *> > (other.value);
         break;
 
       default:
@@ -985,33 +1056,61 @@ namespace yy {
     (void) v;
       switch (this->type_get ())
     {
-      case 42: // program
-      case 43: // expr
-      case 44: // stringExpr
-      case 45: // var
-      case 46: // intExpr
-      case 47: // callExpr
-      case 48: // negExpr
-      case 49: // opExpr
-      case 50: // assignExpr
-      case 51: // whileExpr
-      case 52: // forExpr
-      case 53: // breakExpr
+      case 45: // decl
+      case 47: // varDecl
+      case 48: // funcDecl
+        value.copy< Decl * > (v);
+        break;
+
+      case 44: // program
+      case 46: // expr
+      case 49: // stringExpr
+      case 50: // var
+      case 51: // intExpr
+      case 52: // callExpr
+      case 53: // negExpr
+      case 54: // opExpr
+      case 55: // assignExpr
+      case 56: // whileExpr
+      case 57: // forExpr
+      case 58: // ifExpr
+      case 59: // letInEndExpr
+      case 60: // parentheseExpr
+      case 61: // breakExpr
         value.copy< Expr * > (v);
         break;
 
-      case 34: // "id"
-      case 35: // "string"
+      case 37: // "id"
+      case 38: // "string"
         value.copy< Symbol > (v);
         break;
 
-      case 36: // "int"
+      case 69: // param
+        value.copy< VarDecl * > (v);
+        break;
+
+      case 70: // typeannotation
+        value.copy< boost::optional<Symbol> > (v);
+        break;
+
+      case 39: // "int"
         value.copy< int > (v);
         break;
 
-      case 54: // arguments
-      case 55: // nonemptyarguments
+      case 66: // decls
+        value.copy< std::vector<Decl *> > (v);
+        break;
+
+      case 62: // arguments
+      case 63: // nonemptyarguments
+      case 67: // nonemptysequences
+      case 68: // sequences
         value.copy< std::vector<Expr *> > (v);
+        break;
+
+      case 64: // params
+      case 65: // nonemptyparams
+        value.copy< std::vector<VarDecl *> > (v);
         break;
 
       default:
@@ -1030,6 +1129,13 @@ namespace yy {
   {}
 
   template <typename Base>
+  tiger_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const Decl * v, const location_type& l)
+    : Base (t)
+    , value (v)
+    , location (l)
+  {}
+
+  template <typename Base>
   tiger_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const Expr * v, const location_type& l)
     : Base (t)
     , value (v)
@@ -1044,6 +1150,20 @@ namespace yy {
   {}
 
   template <typename Base>
+  tiger_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const VarDecl * v, const location_type& l)
+    : Base (t)
+    , value (v)
+    , location (l)
+  {}
+
+  template <typename Base>
+  tiger_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const boost::optional<Symbol> v, const location_type& l)
+    : Base (t)
+    , value (v)
+    , location (l)
+  {}
+
+  template <typename Base>
   tiger_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const int v, const location_type& l)
     : Base (t)
     , value (v)
@@ -1051,7 +1171,21 @@ namespace yy {
   {}
 
   template <typename Base>
+  tiger_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const std::vector<Decl *> v, const location_type& l)
+    : Base (t)
+    , value (v)
+    , location (l)
+  {}
+
+  template <typename Base>
   tiger_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const std::vector<Expr *> v, const location_type& l)
+    : Base (t)
+    , value (v)
+    , location (l)
+  {}
+
+  template <typename Base>
+  tiger_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const std::vector<VarDecl *> v, const location_type& l)
     : Base (t)
     , value (v)
     , location (l)
@@ -1083,33 +1217,61 @@ namespace yy {
     // Type destructor.
     switch (yytype)
     {
-      case 42: // program
-      case 43: // expr
-      case 44: // stringExpr
-      case 45: // var
-      case 46: // intExpr
-      case 47: // callExpr
-      case 48: // negExpr
-      case 49: // opExpr
-      case 50: // assignExpr
-      case 51: // whileExpr
-      case 52: // forExpr
-      case 53: // breakExpr
+      case 45: // decl
+      case 47: // varDecl
+      case 48: // funcDecl
+        value.template destroy< Decl * > ();
+        break;
+
+      case 44: // program
+      case 46: // expr
+      case 49: // stringExpr
+      case 50: // var
+      case 51: // intExpr
+      case 52: // callExpr
+      case 53: // negExpr
+      case 54: // opExpr
+      case 55: // assignExpr
+      case 56: // whileExpr
+      case 57: // forExpr
+      case 58: // ifExpr
+      case 59: // letInEndExpr
+      case 60: // parentheseExpr
+      case 61: // breakExpr
         value.template destroy< Expr * > ();
         break;
 
-      case 34: // "id"
-      case 35: // "string"
+      case 37: // "id"
+      case 38: // "string"
         value.template destroy< Symbol > ();
         break;
 
-      case 36: // "int"
+      case 69: // param
+        value.template destroy< VarDecl * > ();
+        break;
+
+      case 70: // typeannotation
+        value.template destroy< boost::optional<Symbol> > ();
+        break;
+
+      case 39: // "int"
         value.template destroy< int > ();
         break;
 
-      case 54: // arguments
-      case 55: // nonemptyarguments
+      case 66: // decls
+        value.template destroy< std::vector<Decl *> > ();
+        break;
+
+      case 62: // arguments
+      case 63: // nonemptyarguments
+      case 67: // nonemptysequences
+      case 68: // sequences
         value.template destroy< std::vector<Expr *> > ();
+        break;
+
+      case 64: // params
+      case 65: // nonemptyparams
+        value.template destroy< std::vector<VarDecl *> > ();
         break;
 
       default:
@@ -1135,33 +1297,61 @@ namespace yy {
     super_type::move(s);
       switch (this->type_get ())
     {
-      case 42: // program
-      case 43: // expr
-      case 44: // stringExpr
-      case 45: // var
-      case 46: // intExpr
-      case 47: // callExpr
-      case 48: // negExpr
-      case 49: // opExpr
-      case 50: // assignExpr
-      case 51: // whileExpr
-      case 52: // forExpr
-      case 53: // breakExpr
+      case 45: // decl
+      case 47: // varDecl
+      case 48: // funcDecl
+        value.move< Decl * > (s.value);
+        break;
+
+      case 44: // program
+      case 46: // expr
+      case 49: // stringExpr
+      case 50: // var
+      case 51: // intExpr
+      case 52: // callExpr
+      case 53: // negExpr
+      case 54: // opExpr
+      case 55: // assignExpr
+      case 56: // whileExpr
+      case 57: // forExpr
+      case 58: // ifExpr
+      case 59: // letInEndExpr
+      case 60: // parentheseExpr
+      case 61: // breakExpr
         value.move< Expr * > (s.value);
         break;
 
-      case 34: // "id"
-      case 35: // "string"
+      case 37: // "id"
+      case 38: // "string"
         value.move< Symbol > (s.value);
         break;
 
-      case 36: // "int"
+      case 69: // param
+        value.move< VarDecl * > (s.value);
+        break;
+
+      case 70: // typeannotation
+        value.move< boost::optional<Symbol> > (s.value);
+        break;
+
+      case 39: // "int"
         value.move< int > (s.value);
         break;
 
-      case 54: // arguments
-      case 55: // nonemptyarguments
+      case 66: // decls
+        value.move< std::vector<Decl *> > (s.value);
+        break;
+
+      case 62: // arguments
+      case 63: // nonemptyarguments
+      case 67: // nonemptysequences
+      case 68: // sequences
         value.move< std::vector<Expr *> > (s.value);
+        break;
+
+      case 64: // params
+      case 65: // nonemptyparams
+        value.move< std::vector<VarDecl *> > (s.value);
         break;
 
       default:
@@ -1223,7 +1413,7 @@ namespace yy {
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
      285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
-     295
+     295,   296,   297
     };
     return static_cast<token_type> (yytoken_number_[type]);
   }
@@ -1421,6 +1611,24 @@ namespace yy {
   }
 
   tiger_parser::symbol_type
+  tiger_parser::make_IF (const location_type& l)
+  {
+    return symbol_type (token::TOK_IF, l);
+  }
+
+  tiger_parser::symbol_type
+  tiger_parser::make_THEN (const location_type& l)
+  {
+    return symbol_type (token::TOK_THEN, l);
+  }
+
+  tiger_parser::symbol_type
+  tiger_parser::make_ELSE (const location_type& l)
+  {
+    return symbol_type (token::TOK_ELSE, l);
+  }
+
+  tiger_parser::symbol_type
   tiger_parser::make_ID (const Symbol& v, const location_type& l)
   {
     return symbol_type (token::TOK_ID, v, l);
@@ -1445,12 +1653,6 @@ namespace yy {
   }
 
   tiger_parser::symbol_type
-  tiger_parser::make_THEN (const location_type& l)
-  {
-    return symbol_type (token::TOK_THEN, l);
-  }
-
-  tiger_parser::symbol_type
   tiger_parser::make_OF (const location_type& l)
   {
     return symbol_type (token::TOK_OF, l);
@@ -1465,7 +1667,7 @@ namespace yy {
 
 
 } // yy
-#line 1469 "tiger_parser.hh" // lalr1.cc:377
+#line 1671 "tiger_parser.hh" // lalr1.cc:377
 
 
 

@@ -72,6 +72,9 @@ using utils::nl;
   FUNCTION "function"
   VAR "var"
   UMINUS "uminus"
+  IF "if"
+  THEN "then"
+  ELSE "else"
 ;
 
 // Define tokens that have an associated value, such as identifiers or strings
@@ -88,9 +91,10 @@ using utils::nl;
 %type <Decl *> decl funcDecl varDecl;
 %type <std::vector<Decl *>> decls;
 %type <Expr *> expr stringExpr callExpr opExpr negExpr
-            assignExpr ifExpr intExpr whileExpr forExpr breakExpr var;
+            assignExpr ifExpr letInEndExpr parentheseExpr intExpr whileExpr forExpr breakExpr var ;
 
-%type <std::vector<Expr *>> arguments nonemptyarguments;
+%type <std::vector<Expr *>> arguments nonemptyarguments
+                            sequences nonemptysequences;
 
 %type <Expr *> program;
 
@@ -130,6 +134,9 @@ expr: stringExpr { $$ = $1; }
    | assignExpr { $$ = $1; }
    | whileExpr { $$ = $1; }
    | forExpr { $$ = $1; }
+   | ifExpr { $$ = $1; }
+   | letInEndExpr { $$ = $1; }
+   | parentheseExpr { $$ = $1; }
    | breakExpr { $$ = $1; }
 ;
 
@@ -199,6 +206,19 @@ forExpr: FOR ID ASSIGN expr TO expr DO expr
   { $$ = new ForLoop(@1, new VarDecl(@2, $2, $4, boost::none), $6, $8); }
 ;
 
+ifExpr: IF expr THEN expr ELSE expr { $$ = new IfThenElse(@1, $2, $4, $6); }
+  | IF expr THEN expr 
+  { $$ = new IfThenElse(@1, $2, $4, new Sequence(nl, std::vector<Expr *>() )); }
+;
+
+letInEndExpr: LET decls IN sequences END 
+  { $$ = new Let(@1, std::vector<Decl *>($2), new Sequence(nl, $4)); }
+;
+
+parentheseExpr: LPAREN sequences RPAREN
+  { $$ = new Sequence(nl, $2); }
+;
+
 breakExpr: BREAK { $$ = new Break(@1); }
 ;
 
@@ -232,6 +252,18 @@ decls: { $$ = std::vector<Decl *>();}
     $$ = std::move($1);
     $$.push_back($2);
   }
+;
+
+nonemptysequences: expr { $$ = std::vector<Expr *>({$1}); }
+  | nonemptysequences SEMICOLON expr
+  {
+    $$ = std::move($1);
+    $$.push_back($3);
+  }
+;
+
+sequences: { $$ = std::vector<Expr *>(); } 
+  | nonemptysequences { $$ = $1; }
 ;
 
 param: ID COLON ID { $$ = new VarDecl(@1, $1, nullptr, $3); }
