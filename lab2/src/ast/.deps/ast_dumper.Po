@@ -793,7 +793,12 @@ ast_dumper.o: ast_dumper.cc /usr/include/stdc-predef.h ast_dumper.hh \
  /usr/include/boost/preprocessor/punctuation/paren.hpp \
  /usr/include/boost/utility/detail/in_place_factory_suffix.hpp \
  /usr/include/boost/optional/optional_fwd.hpp ../parser/location.hh \
- ../parser/position.hh /usr/include/c++/5/iostream
+ ../parser/position.hh /usr/include/c++/5/iostream ../utils/errors.hh \
+ ../utils/../parser/tiger_parser.hh ../utils/../parser/../ast/nodes.hh \
+ ../utils/../parser/../utils/errors.hh \
+ ../utils/../parser/../utils/nolocation.hh \
+ ../utils/../parser/../utils/../parser/location.hh \
+ ../utils/../parser/stack.hh ../utils/../parser/location.hh
 
 /usr/include/stdc-predef.h:
 
@@ -2582,3 +2587,19 @@ nodes.hh:
 ../parser/position.hh:
 
 /usr/include/c++/5/iostream:
+
+../utils/errors.hh:
+
+../utils/../parser/tiger_parser.hh:
+
+../utils/../parser/../ast/nodes.hh:
+
+../utils/../parser/../utils/errors.hh:
+
+../utils/../parser/../utils/nolocation.hh:
+
+../utils/../parser/../utils/../parser/location.hh:
+
+../utils/../parser/stack.hh:
+
+../utils/../parser/location.hh:

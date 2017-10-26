@@ -1,4 +1,5 @@
 #include "ast_dumper.hh"
+#include "../utils/errors.hh"
 
 namespace ast {
 
@@ -181,6 +182,100 @@ void ASTDumper::visit(const Assign &assign) {
   assign.get_lhs().accept(*this);
   *ostream << " := ";
   assign.get_rhs().accept(*this);
+}
+
+int ASTevaluate::visit(const IntegerLiteral &literal){
+  return literal.value;
+}
+int ASTevaluate::visit(const StringLiteral &literal){
+  utils::error("erreur StringLiteral");
+  return -1;
+}
+int ASTevaluate::visit(const BinaryOperator &binop){
+  Operator op = binop.op;
+  int right = binop.get_right().accept(*this);
+  int left = binop.get_left().accept(*this);
+  switch(op){
+    case o_plus:
+      return right + left;
+    case o_minus:
+      return right - left;
+    case o_times:
+      return right * left;
+    case o_divide:
+      return right / left;
+    break;
+    case o_eq:
+      if(right == left) return 1;
+      else return 0;
+    case o_neq:
+      if(right != left) return 1;
+      else return 0;
+    case o_lt:
+      if(left < right) return 1;
+      else return 0;
+    case o_le:
+      if(left <= right) return 1;
+      else return 0;
+    case o_gt:
+      if(left > right) return 1;
+      else return 0;
+    case o_ge:
+      if(left >= right) return 1;
+      else return 0;
+    default :
+      utils::error("fatal error"); return -1;
+  }
+}
+int ASTevaluate::visit(const Sequence &seqExpr){
+  const auto exprs = seqExpr.get_exprs();
+  if(exprs.empty()){
+    utils::error("error expected, empty list, no expressions"); 
+    return -1;
+  }
+  auto expr = exprs[exprs.size()-1];
+  return (*expr).accept(*this);
+}
+int ASTevaluate::visit(const Let &let){
+  utils::error("erreur Let");
+  return -1;
+}
+int ASTevaluate::visit(const Identifier &id){
+  utils::error("erreur Identifier");
+  return -1;
+}
+int ASTevaluate::visit(const IfThenElse &ite){
+  if(ite.get_condition().accept(*this))
+    return ite.get_then_part().accept(*this);
+  return ite.get_else_part().accept(*this);
+}
+int ASTevaluate::visit(const VarDecl &decl){
+  utils::error("erreur varDecl");
+  return -1;
+}
+int ASTevaluate::visit(const FunDecl &decl){
+  utils::error("erreur FunDecl");
+  return -1;
+}
+int ASTevaluate::visit(const FunCall &call){
+  utils::error("erreur FunCall");
+  return -1;
+}
+int ASTevaluate::visit(const WhileLoop &loop){
+  utils::error("erreur WhileLoop");
+  return -1;
+}
+int ASTevaluate::visit(const ForLoop &loop){
+  utils::error("erreur ForLoop");
+  return -1;
+}
+int ASTevaluate::visit(const Break &brk){
+  utils::error("erreur Break");
+  return -1;
+}
+int ASTevaluate::visit(const Assign &assign){
+  utils::error("erreur Assign");
+  return -1;
 }
 
 } // namespace ast

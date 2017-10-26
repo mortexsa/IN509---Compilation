@@ -6,6 +6,7 @@
 #include "../utils/errors.hh"
 
 int main(int argc, char **argv) {
+  int result;
   std::string output_file;
   std::vector<std::string> input_files;
   namespace po = boost::program_options;
@@ -15,6 +16,7 @@ int main(int argc, char **argv) {
   ("dump-ast", "dump the parsed AST")
   ("trace-parser", "enable parser traces")
   ("trace-lexer", "enable lexer traces")
+  ("evaluate,e", "evaluate the expression")
   ("verbose,v", "be verbose")
   ("input-file", po::value(&input_files), "input Tiger file");
 
@@ -44,11 +46,24 @@ int main(int argc, char **argv) {
     utils::error("parser failed");
   }
 
+  if(vm.count("evaluate") && vm.count("dump-ast")) {
+    utils::error("you can not use --dump-ast with -e at the same time.");
+    return -1;
+  }
+
   if (vm.count("dump-ast")) {
     ast::ASTDumper dumper(&std::cout, vm.count("verbose") > 0);
     parser_driver.result_ast->accept(dumper);
     dumper.nl();
   }
+
+  if (vm.count("evaluate")) {
+    ast::ASTevaluate dumper(&std::cout, vm.count("verbose") > 0);
+    std::cout<< parser_driver.result_ast->accept(dumper);
+    dumper.nl();
+  }
+
+  
 
   delete parser_driver.result_ast;
   return 0;
