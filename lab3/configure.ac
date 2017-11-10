@@ -14,6 +14,11 @@ AM_PROG_AR
 AX_BOOST_BASE([1.48],, [AC_MSG_ERROR([dragon-tiger needs Boost, but it was not found in your system])])
 AX_BOOST_PROGRAM_OPTIONS
 
+AX_LLVM([3.8],[4.1.0],[all])
+
+AC_SUBST(LLVM_CPPFLAGS, $LLVM_CPPFLAGS)
+AC_SUBST(LLVM_LDFLAGS, $LLVM_LDFLAGS)
+
 AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/ast/Makefile

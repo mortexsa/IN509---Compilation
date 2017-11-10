@@ -18,6 +18,21 @@
 /* define if the compiler supports basic C++11 syntax */
 #undef HAVE_CXX11
 
+/* The llvm bin dir */
+#undef LLVM_BINDIR
+
+/* The llvm CPPFLAGS */
+#undef LLVM_CPPFLAGS
+
+/* The llvm version */
+#undef LLVM_VERSION
+
+/* The llvm major version */
+#undef LLVM_VERSION_MAJOR
+
+/* The llvm minor version */
+#undef LLVM_VERSION_MINOR
+
 /* Name of package */
 #undef PACKAGE
 
