@@ -97,6 +97,7 @@ FunDecl *Binder::analyze_program(Expr &root) {
   return main;
 }
 
+
 void Binder::visit(IntegerLiteral &literal) {
 }
 
@@ -104,39 +105,92 @@ void Binder::visit(StringLiteral &literal) {
 }
 
 void Binder::visit(BinaryOperator &op) {
+  op.get_left().accept(*this);
+  op.get_right().accept(*this);
 }
 
 void Binder::visit(Sequence &seq) {
+  const auto exprs = seq.get_exprs();
+  for (auto expr = exprs.cbegin(); expr != exprs.cend(); expr++) {
+    (*expr)->accept(*this); 
+  }
 }
-
+/*On doit pouvoir gerer le cas ou on declare deux fonction qui fond appelle
+* l'une a l'autre 
+* 
+* function odd = even()
+* function even = odd()
+* 
+* il faudrai les enter dans le let directement, car sinon sa ne marchera pas 
+*/
 void Binder::visit(Let &let) {
-}
+  push_scope(); //On ajoute un scope
+  for (auto decl : let.get_decls()) {
+    decl->accept(*this);
+  }
 
+  const auto exprs = let.get_sequence().get_exprs();
+  for (auto expr = exprs.cbegin(); expr != exprs.cend(); expr++) {
+    (*expr)->accept(*this);
+  }
+  pop_scope(); //On suprime un scope
+}
+/*on utilise un find ici*/
+/*
+* Animal *a;
+* Tortue * t = dynamic_cast<Tortue *> ...
+*/
 void Binder::visit(Identifier &id) {
+  Decl &decl = find(id.loc,id.name);
+  VarDecl& vdecl = dynamic_cast<VarDecl&>(decl);
+  id.set_decl(&vdecl);
 }
 
 void Binder::visit(IfThenElse &ite) {
+  ite.get_condition().accept(*this);
+  ite.get_then_part().accept(*this);
+  ite.get_else_part().accept(*this);
 }
-
+/*on utilise enter a l'interieur de cette fonction*/
 void Binder::visit(VarDecl &decl) {
+  enter(decl);
+  if (auto expr = decl.get_expr()) {
+    expr->accept(*this);
+  }
 }
-
+/*on utilise enter a l'interieur de cette fonction*/
 void Binder::visit(FunDecl &decl) {
+  auto params = decl.get_params();
+  for (auto param = params.cbegin(); param != params.cend(); param++) {
+    (*param)->accept(*this);
+  }
+  decl.get_expr()->accept(*this);
 }
-
+/* on utilisera un find a l'interieur */
 void Binder::visit(FunCall &call) {
+  auto args = call.get_args();
+  for (auto arg = args.cbegin(); arg != args.cend(); arg++) {
+    (*arg)->accept(*this);
+  }
 }
 
 void Binder::visit(WhileLoop &loop) {
+  loop.get_condition().accept(*this);
+  loop.get_body().accept(*this);
 }
 
 void Binder::visit(ForLoop &loop) {
+  loop.get_variable().get_expr()->accept(*this);
+  loop.get_high().accept(*this);
+  loop.get_body().accept(*this);
 }
 
 void Binder::visit(Break &b) {
 }
 
 void Binder::visit(Assign &assign) {
+  assign.get_lhs().accept(*this);
+  assign.get_rhs().accept(*this);
 }
 
 } // namespace binder
