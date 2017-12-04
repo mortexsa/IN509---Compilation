@@ -12,6 +12,7 @@
 namespace irgen {
 
 llvm::Value *IRGenerator::visit(const IntegerLiteral &literal) {
+  // getInt32 recupere le type d'un nombre représenter en 32 bits.
   return Builder.getInt32(literal.value);
 }
 
@@ -85,7 +86,13 @@ llvm::Value *IRGenerator::visit(const IfThenElse &ite) {
 }
 
 llvm::Value *IRGenerator::visit(const VarDecl &decl) {
-  UNIMPLEMENTED();
+  llvm::Value *result = nullptr;
+  if (auto expr = decl.get_expr()) {
+    result = generate_vardecl(*expr);
+    expr->accept(*this);
+  }
+
+  return result;
 }
 
 llvm::Value *IRGenerator::visit(const FunDecl &decl) {
