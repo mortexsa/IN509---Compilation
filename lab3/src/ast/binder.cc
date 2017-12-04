@@ -143,7 +143,13 @@ void Binder::visit(Let &let) {
 void Binder::visit(Identifier &id) {
   Decl &decl = find(id.loc,id.name);
   VarDecl& vdecl = dynamic_cast<VarDecl&>(decl);
-  id.set_decl(&vdecl);
+  if(vdecl == NULL)
+  {
+    error("l'identifiant est non déclaré !")
+  }
+  else{
+    id.set_decl(&vdecl);
+  }
 }
 
 void Binder::visit(IfThenElse &ite) {
