@@ -124,11 +124,30 @@ void Binder::visit(Sequence &seq) {
 * il faudrai les enter dans le let directement, car sinon sa ne marchera pas 
 */
 void Binder::visit(Let &let) {
-  push_scope(); //On ajoute un scope
+  //gestion des déclaration
+  std::vector<Decl *> fdecl;
+  push_scope();
   for (auto decl : let.get_decls()) {
-    decl->accept(*this);
+    
+    FunDecl* f = dynamic_cast<FunDecl*>(decl);
+    
+    if(f) { enter(*decl); fdecl.push_back(decl); }
+    else {
+      decl->accept(*this);
+      while(!fdecl.empty()) {
+        fdecl.back()->accept(*this);
+        fdecl.pop_back();
+      }
+    }
+    
+  }
+  while(!fdecl.empty()) {
+    fdecl.back()->accept(*this);
+    fdecl.pop_back();
   }
 
+
+  /*Cette partie s'occupe de ce qui se trouve entre le in et end*/
   const auto exprs = let.get_sequence().get_exprs();
   for (auto expr = exprs.cbegin(); expr != exprs.cend(); expr++) {
     (*expr)->accept(*this);
@@ -143,13 +162,8 @@ void Binder::visit(Let &let) {
 void Binder::visit(Identifier &id) {
   Decl &decl = find(id.loc,id.name);
   VarDecl& vdecl = dynamic_cast<VarDecl&>(decl);
-  if(vdecl == NULL)
-  {
-    error("l'identifiant est non déclaré !")
-  }
-  else{
-    id.set_decl(&vdecl);
-  }
+  if(&vdecl) id.set_decl(&vdecl);
+  else error("l'identifiant est non déclaré !");
 }
 
 void Binder::visit(IfThenElse &ite) {
@@ -166,18 +180,32 @@ void Binder::visit(VarDecl &decl) {
 }
 /*on utilise enter a l'interieur de cette fonction*/
 void Binder::visit(FunDecl &decl) {
+  push_scope();
+  
   auto params = decl.get_params();
   for (auto param = params.cbegin(); param != params.cend(); param++) {
     (*param)->accept(*this);
   }
   decl.get_expr()->accept(*this);
+  
+  pop_scope();
 }
 /* on utilisera un find a l'interieur */
 void Binder::visit(FunCall &call) {
+
+  Decl &decl = find(call.loc,call.func_name);
+  FunDecl& fdecl = dynamic_cast<FunDecl&>(decl);
+  
+  if(&fdecl) call.set_decl(&fdecl);
+  else error("La fonction n'est pas déclaré !");
+  
+  push_scope();
   auto args = call.get_args();
   for (auto arg = args.cbegin(); arg != args.cend(); arg++) {
     (*arg)->accept(*this);
   }
+  
+  pop_scope();
 }
 
 void Binder::visit(WhileLoop &loop) {
