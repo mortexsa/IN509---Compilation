@@ -219,17 +219,23 @@ void Binder::visit(FunCall &call) {
 }
 
 void Binder::visit(WhileLoop &loop) {
+  loops.push_back(&loop);
   loop.get_condition().accept(*this);
   loop.get_body().accept(*this);
+  loops.pop_back();
 }
 
 void Binder::visit(ForLoop &loop) {
+  loops.push_back(&loop);
   loop.get_variable().get_expr()->accept(*this);
   loop.get_high().accept(*this);
   loop.get_body().accept(*this);
+  loops.pop_back();
 }
 
 void Binder::visit(Break &b) {
+  if(!loops.empty()) b.set_loop(loops.back());
+  else error("break is used outside of a loop");
 }
 
 void Binder::visit(Assign &assign) {
