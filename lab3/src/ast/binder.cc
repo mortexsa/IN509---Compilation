@@ -12,10 +12,10 @@ namespace binder {
 scope_t &Binder::current_scope() { return scopes.back(); }
 
 /* Pushes a new scope on the stack */
-void Binder::push_scope() { scopes.push_back(scope_t()); }
+void Binder::push_scope() { scopes.push_back(scope_t()); depth += 1; }
 
 /* Pops the current scope from the stack */
-void Binder::pop_scope() { scopes.pop_back(); }
+void Binder::pop_scope() { scopes.pop_back(); depth -= 1;}
 
 /* Enter a declaration in the current scope. Raises an error if the declared name
  * is already defined */
@@ -160,10 +160,14 @@ void Binder::visit(Let &let) {
 * Tortue * t = dynamic_cast<Tortue *> ...
 */
 void Binder::visit(Identifier &id) {
+  id.set_depth(depth);
+
   Decl &decl = find(id.loc,id.name);
-  VarDecl& vdecl = dynamic_cast<VarDecl&>(decl);
-  if(&vdecl) id.set_decl(&vdecl);
+  VarDecl* vdecl = dynamic_cast<VarDecl *>(&decl);
+  if(vdecl) id.set_decl(vdecl);
   else error("l'identifiant est non déclaré !");
+
+  if(vdecl->get_depth() != id.get_depth()) vdecl->set_escapes();
 }
 
 void Binder::visit(IfThenElse &ite) {
@@ -173,6 +177,8 @@ void Binder::visit(IfThenElse &ite) {
 }
 /*on utilise enter a l'interieur de cette fonction*/
 void Binder::visit(VarDecl &decl) {
+  decl.set_depth(depth);
+
   enter(decl);
   if (auto expr = decl.get_expr()) {
     expr->accept(*this);
@@ -180,6 +186,8 @@ void Binder::visit(VarDecl &decl) {
 }
 /*on utilise enter a l'interieur de cette fonction*/
 void Binder::visit(FunDecl &decl) {
+  decl.set_depth(depth);
+
   push_scope();
   
   auto params = decl.get_params();
@@ -192,14 +200,16 @@ void Binder::visit(FunDecl &decl) {
 }
 /* on utilisera un find a l'interieur */
 void Binder::visit(FunCall &call) {
+  call.set_depth(depth);
 
-  Decl &decl = find(call.loc,call.func_name);
-  FunDecl& fdecl = dynamic_cast<FunDecl&>(decl);
+  push_scope();
   
-  if(&fdecl) call.set_decl(&fdecl);
+  Decl &decl = find(call.loc,call.func_name);
+  FunDecl* fdecl = dynamic_cast<FunDecl *>(&decl);
+  
+  if(fdecl) call.set_decl(fdecl);
   else error("La fonction n'est pas déclaré !");
   
-  push_scope();
   auto args = call.get_args();
   for (auto arg = args.cbegin(); arg != args.cend(); arg++) {
     (*arg)->accept(*this);

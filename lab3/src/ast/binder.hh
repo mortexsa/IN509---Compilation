@@ -11,6 +11,7 @@ namespace binder {
 typedef std::unordered_map<Symbol, Decl *> scope_t;
 
 class Binder : public ASTVisitor {
+  int depth = 0;
   std::vector<scope_t> scopes;
   scope_t &current_scope();
   void push_scope();
