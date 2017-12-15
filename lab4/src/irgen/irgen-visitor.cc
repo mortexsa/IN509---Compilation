@@ -78,7 +78,7 @@ llvm::Value *IRGenerator::visit(const Let &let) {
 }
 
 llvm::Value *IRGenerator::visit(const Identifier &id) {
-  UNIMPLEMENTED();
+  return Builder.CreateLoad(address_of(id));
 }
 
 llvm::Value *IRGenerator::visit(const IfThenElse &ite) {
@@ -86,13 +86,11 @@ llvm::Value *IRGenerator::visit(const IfThenElse &ite) {
 }
 
 llvm::Value *IRGenerator::visit(const VarDecl &decl) {
-  llvm::Value *result = nullptr;
   if (auto expr = decl.get_expr()) {
-    result = generate_vardecl(*expr);
-    expr->accept(*this);
+    Builder.CreateStore(expr->accept(*this), generate_vardecl(decl));
   }
-
-  return result;
+  //rajouter une condition si on donne pas de valeur a la declaration
+  return nullptr;
 }
 
 llvm::Value *IRGenerator::visit(const FunDecl &decl) {
@@ -189,7 +187,7 @@ llvm::Value *IRGenerator::visit(const ForLoop &loop) {
 }
 
 llvm::Value *IRGenerator::visit(const Assign &assign) {
-  UNIMPLEMENTED();
+  Builder.CreateStore(assign.get_rhs().accept(*this), address_of(assign.get_lhs()));
 }
 
 } // namespace irgen
