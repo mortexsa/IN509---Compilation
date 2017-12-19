@@ -12,7 +12,6 @@
 namespace irgen {
 
 llvm::Value *IRGenerator::visit(const IntegerLiteral &literal) {
-  // getInt32 recupere le type d'un nombre représenter en 32 bits.
   return Builder.getInt32(literal.value);
 }
 
@@ -21,7 +20,11 @@ llvm::Value *IRGenerator::visit(const StringLiteral &literal) {
 }
 
 llvm::Value *IRGenerator::visit(const Break &b) {
-  UNIMPLEMENTED();
+    Builder.CreateBr(loop_exit_bbs[&(b.get_loop())]);
+    //~ llvm::BasicBlock *const break_block =
+    //~ llvm::BasicBlock::Create(Context, "break", current_function);
+  return nullptr;
+ 
 }
 
 llvm::Value *IRGenerator::visit(const BinaryOperator &op) {
@@ -78,19 +81,58 @@ llvm::Value *IRGenerator::visit(const Let &let) {
 }
 
 llvm::Value *IRGenerator::visit(const Identifier &id) {
-  return Builder.CreateLoad(address_of(id));
+ return Builder.CreateLoad(address_of(id));
 }
 
 llvm::Value *IRGenerator::visit(const IfThenElse &ite) {
-  UNIMPLEMENTED();
+  //~ if(ite.get_condition.get_type().accept(*this)==t_void){}
+  bool returnNull= ite.get_type()==t_void;
+  llvm::Value *const result =alloca_in_entry(llvm_type(ite.get_type()), "if_result");
+  llvm::BasicBlock *const if_then_block =
+    llvm::BasicBlock::Create(Context, "if_then", current_function);
+    llvm::BasicBlock *const if_else_block =
+    llvm::BasicBlock::Create(Context, "if_else", current_function);
+  
+    llvm::BasicBlock *const if_end_block =
+    llvm::BasicBlock::Create(Context, "if_end", current_function); 
+     
+  Builder.CreateCondBr(Builder.CreateIsNotNull(ite.get_condition().accept(*this)),if_then_block,if_else_block);                   
+  Builder.SetInsertPoint(if_end_block);
+  Builder.SetInsertPoint(if_then_block);
+  
+  llvm::Value *const then_result =ite.get_then_part().accept(*this);
+    Builder.CreateBr(if_end_block);
+  if (returnNull) {;} 
+  else{
+    Builder.CreateStore(then_result, result);
+  
+  }
+
+  
+  Builder.SetInsertPoint(if_else_block);
+
+  llvm::Value *const else_result =ite.get_else_part().accept(*this);
+    Builder.CreateBr(if_end_block);
+  if (returnNull) {;} 
+  else{ 
+  Builder.CreateStore(else_result, result);
+
+  }
+  //~ llvm::Value *const result =alloca_in_entry(llvm_type(ite.get_type()), "if_result");
+  Builder.SetInsertPoint(if_end_block);
+  if (returnNull) {return nullptr;} 
+  else{return Builder.CreateLoad(result);}
+  
 }
 
 llvm::Value *IRGenerator::visit(const VarDecl &decl) {
-  if (auto expr = decl.get_expr()) {
-    Builder.CreateStore(expr->accept(*this), generate_vardecl(decl));
-  }
-  //rajouter une condition si on donne pas de valeur a la declaration
-  return nullptr;
+  
+
+   llvm::Value *const index = decl.get_expr()->accept(*this);
+   llvm::Value *const tmp = generate_vardecl(decl);
+  Builder.CreateStore(index,tmp);
+  return tmp;
+  
 }
 
 llvm::Value *IRGenerator::visit(const FunDecl &decl) {
@@ -158,7 +200,28 @@ llvm::Value *IRGenerator::visit(const FunCall &call) {
 }
 
 llvm::Value *IRGenerator::visit(const WhileLoop &loop) {
-  UNIMPLEMENTED();
+  llvm::BasicBlock *const test_block =
+      llvm::BasicBlock::Create(Context, "loop_test", current_function);
+  llvm::BasicBlock *const body_block =
+      llvm::BasicBlock::Create(Context, "loop_body", current_function);
+  llvm::BasicBlock *const end_block =
+      llvm::BasicBlock::Create(Context, "loop_end", current_function);
+llvm::Value *const condition = loop.get_condition().accept(*this);
+ loop_exit_bbs[&loop]=end_block;
+  Builder.CreateBr(test_block);
+
+  Builder.SetInsertPoint(test_block);
+  Builder.CreateCondBr(Builder.CreateIsNotNull(condition),body_block,end_block);  
+                       
+                       
+   Builder.SetInsertPoint(body_block);
+  loop.get_body().accept(*this);
+
+  Builder.CreateBr(test_block);
+
+  Builder.SetInsertPoint(end_block);
+  return nullptr;
+
 }
 
 llvm::Value *IRGenerator::visit(const ForLoop &loop) {
@@ -170,6 +233,7 @@ llvm::Value *IRGenerator::visit(const ForLoop &loop) {
       llvm::BasicBlock::Create(Context, "loop_end", current_function);
   llvm::Value *const index = loop.get_variable().accept(*this);
   llvm::Value *const high = loop.get_high().accept(*this);
+  loop_exit_bbs[&loop]=end_block;
   Builder.CreateBr(test_block);
 
   Builder.SetInsertPoint(test_block);
@@ -187,7 +251,9 @@ llvm::Value *IRGenerator::visit(const ForLoop &loop) {
 }
 
 llvm::Value *IRGenerator::visit(const Assign &assign) {
-  Builder.CreateStore(assign.get_rhs().accept(*this), address_of(assign.get_lhs()));
+  llvm::Value *tmp=assign.get_rhs().accept(*this);
+    Builder.CreateStore(tmp,address_of(assign.get_lhs()));
+  return tmp;
 }
 
 } // namespace irgen
